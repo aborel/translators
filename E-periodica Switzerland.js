@@ -10,10 +10,14 @@
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
+=======
+	"lastUpdated": "2023-03-26 18:56:41"
+>>>>>>> 16e05b42 (use scrape() for single refs as well)
 }
 
 /*
@@ -197,20 +201,7 @@ async function scrape(url) {
 function processRIS(risText, pdfURL) {
 =======
 	if (detectWeb(doc, url) == 'journalArticle') {
-		const elDoi = doc.querySelector(".ep-view__share__doi");
-		// Zotero.debug(elDoi);
-		const elRis = doc.querySelector(".ep-view__share__ris");
-		// Zotero.debug(elRis);
-		const risURL = elRis.querySelectorAll('a')[0].href;
-		const elPdf = doc.querySelector(".ep-view__share__downloads");
-		const pdfURL = elPdf.querySelectorAll('a')[0].href;
-		Zotero.debug(elDoi.href);
-		Zotero.debug(risURL);
-		Zotero.debug(pdfURL);
-		
-		ZU.doGet(risURL, function (text, URL, PDFURL) {
-			processRIS(text, url, pdfURL);
-		});
+		scrape(doc, url);
 	}
 
 	if (detectWeb(doc, url) == 'multiple') {
@@ -228,11 +219,8 @@ function processRIS(risText, pdfURL) {
 }
 
 async function scrape(next_doc, url) {
-	// querySelectors not working at this point. Is the DOM not complete yet?
+	// querySelectors not working at this point for multiple. Is the DOM not complete yet?
 	var next_url = next_doc.location.href;
-	Zotero.debug('Should process ' + next_url);
-	Zotero.debug(typeof(next_doc));
-	Zotero.debug(typeof(next_url));
 	Zotero.debug('trying to process ' + next_url);
 	Zotero.debug('#################\n\n');
 	// Zotero.debug(next_doc.documentElement.innerHTML);
