@@ -13,6 +13,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -26,6 +27,9 @@
 =======
 	"lastUpdated": "2023-03-28 17:54:20"
 >>>>>>> d417f84b (reliability OK for single refs, PDFs not always retrieved for multiple)
+=======
+	"lastUpdated": "2023-04-23 08:58:26"
+>>>>>>> 1e7942dd (replace doGet() with requestText() as recommended)
 }
 
 /*
@@ -241,7 +245,6 @@ function processRIS(risText, pdfURL) {
 
 async function scrape(nextDoc, url) {
 	var nextUrl = nextDoc.location.href;
-	var origin = nextDoc.location.protocol + '//' + nextDoc.location.hostname;
 	Zotero.debug('trying to process ' + nextUrl);
 	// Do we really need to handle these #-containing URLs?
 	nextUrl = nextUrl.replace("#", "%3A%3A").replace("::", "%3A%3A");
@@ -255,20 +258,19 @@ async function scrape(nextDoc, url) {
 	Zotero.debug(epJSON);
 	var risURL = null;
 	if (epJSON.articles["0"].hasRisLink) {
-		risURL = origin + '/view/' + epJSON.articles["0"].risLink;
+		risURL = '/view/' + epJSON.articles["0"].risLink;
 	}
 	
 	Zotero.debug(risURL);
 	var pdfURL = null;
 	if (epJSON.articles["0"].hasPdfLink) {
-		pdfURL = origin + epJSON.articles["0"].pdfLink;
+		pdfURL = epJSON.articles["0"].pdfLink;
 	}
 	
 	Zotero.debug(pdfURL);
 	if (risURL) {
-		ZU.doGet(risURL, function (text) {
-			processRIS(text, url, pdfURL);
-		});
+		let text = await requestText(risURL);
+		processRIS(text, url, pdfURL);
 	}
 	else {
 		var item = new Zotero.Item("journalArticle");
