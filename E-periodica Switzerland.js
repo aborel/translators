@@ -16,6 +16,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -38,6 +39,9 @@
 =======
 	"lastUpdated": "2023-04-23 10:01:51"
 >>>>>>> 5bac43e8 (colon spacing fix as recommended)
+=======
+	"lastUpdated": "2023-04-23 10:25:03"
+>>>>>>> e551e3f4 (simplify processRIS())
 }
 
 /*
@@ -320,6 +324,7 @@ function processRIS(text, URL, pdfURL) {
 	// Z.debug(text);
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	translator.setString(risText);
 	translator.setHandler("itemDone", function (obj, item) {
 		// Don't save HTML snapshot from 'UR' tag
@@ -338,59 +343,16 @@ function processRIS(text, URL, pdfURL) {
 	// sometimes we have subtitles stored in T1. These are part of the title, we want to add them later
 	var subtitle = text.match(/^T1\s+-\s+(.+)/m);
 	var maintitle = text.match(/^TI\s+-\s+(.+)/m);
+=======
+>>>>>>> e551e3f4 (simplify processRIS())
 	translator.setString(text);
 	translator.setHandler("itemDone", function (obj, item) {
-		// author names are not (always) supplied as lastName, firstName in RIS
-		// we fix it here (note sure if still need with new RIS)
-	
-		var m;
-		for (var i = 0, n = item.creators.length; i < n; i++) {
-			if (!item.creators[i].firstName
-				&& (m = item.creators[i].lastName.match(/^(.+)\s+(\S+)$/))) {
-				item.creators[i].firstName = m[1];
-				item.creators[i].lastName = m[2];
-				delete item.creators[i].fieldMode;
-			}
-		}
-		
-		// fix special characters in abstract, convert html linebreaks and italics, remove stray p tags; don't think they use anything else
-		if (item.abstractNote) {
-			item.abstractNote = convertCharRefs(item.abstractNote);
-			item.abstractNote = item.abstractNote.replace(/<\/p><p>/g, "\n").replace(/<em>(.+?)<\/em>/g, " <i>$1</i> ").replace(/<\/?p>/g, "");
-			item.abstractNote = item.abstractNote.replace(/^\[/, "").replace(/\]$/, "");
-		}
-		// Don't save HTML snapshot from 'UR' tag
+        // Don't save HTML snapshot from 'UR' tag
 		item.attachments = [];
 		
 		Zotero.debug('in processRIS');
 		Zotero.debug(item);
 
-		if (item.ISSN) {
-			item.ISSN = ZU.cleanISSN(item.ISSN);
-		}
-		
-		if (maintitle && subtitle) {
-			maintitle[1] = maintitle[1].replace(/:\s*$/, '');
-			item.title = maintitle[1] + ": " + subtitle[1];
-		}
-		// reviews don't have titles in RIS - we get them from the item page
-		if (!item.title && review) {
-			var reviewedTitle = review[1];
-			// A2 for reviews is actually the reviewed author
-			var reviewedAuthors = [];
-			for (i = 0; i < item.creators.length; i++) {
-				if (item.creators[i].creatorType == "editor") {
-					reviewedAuthors.push(item.creators[i].firstName + " " + item.creators[i].lastName);
-					item.creators[i].creatorType = "reviewedAuthor";
-				}
-			}
-			// remove any reviewed authors from the title
-			for (i = 0; i < reviewedAuthors.length; i++) {
-				reviewedTitle = reviewedTitle.replace(", " + reviewedAuthors[i], "");
-			}
-			item.title = "Review of " + reviewedTitle;
-		}
-		
 		// titles may also contain escape characters
 		item.title = convertCharRefs(item.title);
 
@@ -398,6 +360,7 @@ function processRIS(text, URL, pdfURL) {
 			item.publicationTitle = item.publicationTitle.replace(' : ', ': ');
 		}
 		
+<<<<<<< HEAD
 		// remove all caps from titles and authors.
 		for (i = 0; i < item.creators.length; i++) {
 			if (item.creators[i].lastName && item.creators[i].lastName == item.creators[i].lastName.toUpperCase()) {
@@ -408,6 +371,8 @@ function processRIS(text, URL, pdfURL) {
 			}
 		}
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
+=======
+>>>>>>> e551e3f4 (simplify processRIS())
 		if (item.title == item.title.toUpperCase()) {
 			item.title = ZU.capitalizeTitle(item.title.toLowerCase(), true);
 		}
