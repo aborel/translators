@@ -14,6 +14,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -30,6 +31,9 @@
 =======
 	"lastUpdated": "2023-04-23 08:58:26"
 >>>>>>> 1e7942dd (replace doGet() with requestText() as recommended)
+=======
+	"lastUpdated": "2023-04-23 09:00:51"
+>>>>>>> 67db6c3e (remove TODOs)
 }
 
 /*
@@ -77,7 +81,6 @@ function sleep(ms) {
 =======
 >>>>>>> d86bde37 (fix lint errors and warnings)
 function detectWeb(doc, url) {
-	// TODO: adjust the logic here
 	if (url.includes('/digbib/view')) {
 		return "journalArticle";
 	}
@@ -110,11 +113,13 @@ function getSearchResults(doc, checkOnly) {
 	var rows = doc.querySelectorAll('h2.ep-result__title > a');
 	for (let row of rows) {
 		Zotero.debug(row.innerHTML);
-		// TODO: check and maybe adjust
 		let href = row.href;
 		Zotero.debug(href);
+<<<<<<< HEAD
 		// TODO: check and maybe adjust
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
+=======
+>>>>>>> 67db6c3e (remove TODOs)
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
 		if (checkOnly) return true;
