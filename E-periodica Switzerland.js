@@ -18,6 +18,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -46,6 +47,9 @@
 =======
 	"lastUpdated": "2023-04-27 15:19:03"
 >>>>>>> 00c3234b (Fixed multiple results + some clean-up)
+=======
+	"lastUpdated": "2023-04-27 15:22:23"
+>>>>>>> e0071020 (Fixed lint warning)
 }
 
 /*
@@ -243,11 +247,13 @@ function processRIS(risText, pdfURL) {
 =======
 	if (detectWeb(doc, url) == 'journalArticle') {
 		await scrape(doc, url);
-	} else if (detectWeb(doc, url) == 'multiple') {
+	}
+	else if (detectWeb(doc, url) == 'multiple') {
 		Zotero.selectItems(getSearchResults(doc, false), function (items) {
 			if (items) ZU.processDocuments(Object.keys(items), scrape);
 		});
-	} else {
+	}
+	else {
 		// The fallback is not expected to be used on E-periodica, but just in case...
 		await scrape(doc, url);
 	}
