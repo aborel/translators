@@ -308,14 +308,6 @@ async function scrape(nextDoc, url) {
 	}
 }
 
-function convertCharRefs(string) {
-	// converts hex decimal encoded html entities used by JSTOR to regular utf-8
-	return string
-		.replace(/&#x([A-Za-z0-9]+);/g, function (match, num) {
-			return String.fromCharCode(parseInt(num, 16));
-		});
-}
-
 function processRIS(text, URL, pdfURL) {
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
 	// load translator for RIS
@@ -347,14 +339,16 @@ function processRIS(text, URL, pdfURL) {
 >>>>>>> e551e3f4 (simplify processRIS())
 	translator.setString(text);
 	translator.setHandler("itemDone", function (obj, item) {
-        // Don't save HTML snapshot from 'UR' tag
+		// Don't save HTML snapshot from 'UR' tag
 		item.attachments = [];
 		
 		Zotero.debug('in processRIS');
 		Zotero.debug(item);
 
-		// titles may also contain escape characters
-		item.title = convertCharRefs(item.title);
+		// change colon spacing in title and publicationTitle
+		if (item.title) {
+			item.title = item.title.replace(' : ', ': ');
+		}
 
 		if (item.publicationTitle) {
 			item.publicationTitle = item.publicationTitle.replace(' : ', ': ');
