@@ -21,6 +21,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -58,6 +59,9 @@
 =======
 	"lastUpdated": "2023-07-03 16:31:30"
 >>>>>>> e9b74d56 (Commented out a few debug() calls)
+=======
+	"lastUpdated": "2023-07-03 16:38:30"
+>>>>>>> 4bb7dffc (fix forgotten fulltext title instance)
 }
 
 /*
