@@ -20,6 +20,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -54,6 +55,9 @@
 =======
 	"lastUpdated": "2023-07-03 16:28:13"
 >>>>>>> 20fd0c61 (remove unnecessary title check)
+=======
+	"lastUpdated": "2023-07-03 16:31:30"
+>>>>>>> e9b74d56 (Commented out a few debug() calls)
 }
 
 /*
@@ -134,12 +138,16 @@ function getSearchResults(doc, checkOnly) {
 	for (let row of rows) {
 		// Zotero.debug(row.innerHTML);
 		let href = row.href;
+<<<<<<< HEAD
 		Zotero.debug(href);
 <<<<<<< HEAD
 		// TODO: check and maybe adjust
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
 =======
 >>>>>>> 67db6c3e (remove TODOs)
+=======
+		// Zotero.debug(href);
+>>>>>>> e9b74d56 (Commented out a few debug() calls)
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
 		if (checkOnly) return true;
@@ -283,13 +291,13 @@ async function scrape(nextDoc, url) {
 		risURL = '/view/' + epJSON.articles["0"].risLink;
 	}
 	
-	Zotero.debug(risURL);
+	// Zotero.debug(risURL);
 	var pdfURL = null;
 	if (epJSON.articles["0"].hasPdfLink) {
 		pdfURL = epJSON.articles["0"].pdfLink;
 	}
 	
-	Zotero.debug(pdfURL);
+	// Zotero.debug(pdfURL);
 	if (risURL) {
 		let text = await requestText(risURL);
 		processRIS(text, url, pdfURL);
@@ -306,7 +314,7 @@ async function scrape(nextDoc, url) {
 			item.volume = numyear[0];
 		}
 		if (pdfURL) {
-			Zotero.debug('PDF URL: ' + pdfURL);
+			// Zotero.debug('PDF URL: ' + pdfURL);
 			item.attachments.push({
 				url: pdfURL,
 				title: "Full Text PDF",
