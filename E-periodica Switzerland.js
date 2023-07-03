@@ -19,6 +19,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -50,6 +51,9 @@
 =======
 	"lastUpdated": "2023-04-27 15:22:23"
 >>>>>>> e0071020 (Fixed lint warning)
+=======
+	"lastUpdated": "2023-07-03 16:28:13"
+>>>>>>> 20fd0c61 (remove unnecessary title check)
 }
 
 /*
@@ -348,9 +352,7 @@ function processRIS(text, URL, pdfURL) {
 		item.attachments = [];
 		
 		// change colon spacing in title and publicationTitle
-		if (item.title) {
-			item.title = item.title.replace(' : ', ': ');
-		}
+		item.title = item.title.replace(' : ', ': ');
 
 		if (item.publicationTitle) {
 			item.publicationTitle = item.publicationTitle.replace(' : ', ': ');
