@@ -23,6 +23,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -66,6 +67,9 @@
 =======
 	"lastUpdated": "2023-07-03 16:50:16"
 >>>>>>> ab9d5b6f (updated tests to match the new fulltext title)
+=======
+	"lastUpdated": "2023-07-03 16:54:43"
+>>>>>>> ebff3038 (updated tests to match the new fulltext title)
 }
 
 /*
@@ -662,8 +666,12 @@ var testCases = [
 				"volume": "11",
 				"attachments": [
 					{
+<<<<<<< HEAD
 						"title": "E-periodica PDF",
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
+=======
+						"title": "Full Text PDF",
+>>>>>>> ebff3038 (updated tests to match the new fulltext title)
 						"type": "application/pdf"
 					}
 				],
@@ -698,7 +706,7 @@ var testCases = [
 				"volume": "137",
 				"attachments": [
 					{
-						"title": "E-periodica PDF",
+						"title": "Full Text PDF",
 						"type": "application/pdf"
 					}
 				],
@@ -733,7 +741,7 @@ var testCases = [
 				"volume": "2",
 				"attachments": [
 					{
-						"title": "E-periodica PDF",
+						"title": "Full Text PDF",
 						"type": "application/pdf"
 					}
 				],
