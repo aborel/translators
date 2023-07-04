@@ -24,6 +24,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -70,6 +71,9 @@
 =======
 	"lastUpdated": "2023-07-03 16:54:43"
 >>>>>>> ebff3038 (updated tests to match the new fulltext title)
+=======
+	"lastUpdated": "2023-07-03 17:08:53"
+>>>>>>> 6ac7b212 (commented out JSON debug())
 }
 
 /*
@@ -297,7 +301,7 @@ async function scrape(nextDoc, url) {
 	Zotero.debug('JSON URL ' + pageinfoUrl);
 	let text = await requestText(pageinfoUrl);
 	var epJSON = JSON.parse(text);
-	Zotero.debug(epJSON);
+	// Zotero.debug(epJSON);
 	let risURL;
 	if (epJSON.articles["0"].hasRisLink) {
 		risURL = '/view/' + epJSON.articles["0"].risLink;
