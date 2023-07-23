@@ -25,6 +25,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"lastUpdated": "2023-08-15 20:15:50"
 =======
 	"lastUpdated": "2023-03-26 18:29:23"
@@ -74,6 +75,9 @@
 =======
 	"lastUpdated": "2023-07-03 17:08:53"
 >>>>>>> 6ac7b212 (commented out JSON debug())
+=======
+	"lastUpdated": "2023-07-23 10:15:20"
+>>>>>>> e14dbe13 (More useful handling of untitled content)
 }
 
 /*
@@ -301,8 +305,13 @@ async function scrape(nextDoc, url) {
 	Zotero.debug('JSON URL ' + pageinfoUrl);
 	let text = await requestText(pageinfoUrl);
 	var epJSON = JSON.parse(text);
-	// Zotero.debug(epJSON);
+	Zotero.debug(epJSON);
 	let risURL;
+	if (epJSON.articles.length == 0) {
+		// Fallback for non-article content, listed as Werbung, Sonstiges and various others:
+		// this information is unfortunately not included in the JSON metadata => let's add a reasonable pseudo-title
+		epJSON.articles = [{ title: "Untitled" }];
+	}
 	if (epJSON.articles["0"].hasRisLink) {
 		risURL = '/view/' + epJSON.articles["0"].risLink;
 	}
@@ -312,7 +321,6 @@ async function scrape(nextDoc, url) {
 	if (epJSON.articles["0"].hasPdfLink) {
 		pdfURL = epJSON.articles["0"].pdfLink;
 	}
-	
 	// Zotero.debug(pdfURL);
 	if (risURL) {
 		let text = await requestText(risURL);
@@ -322,13 +330,33 @@ async function scrape(nextDoc, url) {
 		var item = new Zotero.Item("journalArticle");
 		item.title = epJSON.articles["0"].title.replace(' : ', ': ');
 		item.publicationTitle = epJSON.journalTitle.replace(' : ', ': ');
-		var numyear = epJSON.volumeNumYear.replace("(", "").replace(")", "").split(" ");
+		var numyear = epJSON.volumeNumYear.replace("(", " ").replace(")", "").split(" ");
 		if (numyear.length > 1) {
 			item.date = numyear.slice(-1);
 		}
 		if (numyear.length > 0) {
 			item.volume = numyear[0];
 		}
+		if (epJSON.issueNumber) {
+			item.issue = epJSON.issueNumber;
+		}
+		if (epJSON.viewerLink.length > 0) {
+			if (epJSON.viewerLink.indexOf("http") == 0) {
+				item.url = epJSON.viewerLink;
+			}
+			else {
+				item.url = "https://www.e-periodica.ch" + epJSON.viewerLink;
+			}
+		}
+		if (epJSON.pdfLink) {
+			if (epJSON.pdfLink.indexOf("http") == 0) {
+				pdfURL = epJSON.pdfLink;
+			}
+			else {
+				pdfURL = "https://www.e-periodica.ch" + epJSON.pdfLink;
+			}
+		}
+		Zotero.debug(pdfURL);
 		if (pdfURL) {
 			// Zotero.debug('PDF URL: ' + pdfURL);
 			item.attachments.push({
@@ -655,6 +683,7 @@ var testCases = [
 				"attachments": [
 					{
 						"title": "Full Text PDF",
+<<<<<<< HEAD
 =======
 				"DOI": "10.5169/seals-986029",
 =======
@@ -746,6 +775,8 @@ var testCases = [
 				"attachments": [
 					{
 						"title": "Full Text PDF",
+=======
+>>>>>>> e14dbe13 (More useful handling of untitled content)
 						"type": "application/pdf"
 					}
 				],
