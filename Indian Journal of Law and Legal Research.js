@@ -12,6 +12,16 @@
 	"lastUpdated": "2023-08-01 05:34:46"
 }
 
+unction detectWeb(doc, url) {
+	if (url.includes("volume")) {
+		return "multiple";
+	}
+	else if (url.includes("post")) {
+		return "journalArticle";
+	}
+	return false;
+}
+
 /** BEGIN TEST CASES **/
 var testCases = [
 ]
