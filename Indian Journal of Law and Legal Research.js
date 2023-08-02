@@ -2,7 +2,7 @@
 	"translatorID": "abca0ea9-1434-48ea-a04f-0d926973686b",
 	"label": "Indian Journal of Law and Legal Research",
 	"creator": "Alain Borel",
-	"target": "https://www.ijllr.com",
+	"target": "^https?://www\\.ijllr\\.com",
 	"minVersion": "5.0",
 	"maxVersion": "",
 	"priority": 100,
