@@ -35,6 +35,9 @@
 	***** END LICENSE BLOCK *****
 */
 
+// single ref example  https://www.ijllr.com/post/pocso-act-a-critical-analysis
+// multiple ref example https://www.ijllr.com/volume-v-issue-iii
+
 function detectWeb(doc, url) {
 	if (url.includes("volume")) {
 		return "multiple";
