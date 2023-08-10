@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-01 05:34:46"
+	"lastUpdated": "2023-08-10 05:12:30"
 }
 
 /*
@@ -90,7 +90,10 @@ async function scrape(nextDoc, url) {
 	var item = new Zotero.Item("journalArticle");
 	//let title = nextDoc.querySelectorAll('h1 > span.post-title__text > span.blog-post-title-font');
 	let title = nextDoc.querySelectorAll('h1.post-title');
-	Zotero.debug(title.innerHTML);
+	Zotero.debug(title[0].textContent);
+	if (title) {
+		item.title = title[0].textContent;
+	}
 
 	item.complete();
 
