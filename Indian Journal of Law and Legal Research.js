@@ -87,6 +87,12 @@ async function doWeb(doc, url) {
 
 
 async function scrape(nextDoc, url) {
+	var item = new Zotero.Item("journalArticle");
+	//let title = nextDoc.querySelectorAll('h1 > span.post-title__text > span.blog-post-title-font');
+	let title = nextDoc.querySelectorAll('h1.post-title');
+	Zotero.debug(title.innerHTML);
+
+	item.complete();
 
 }
 
