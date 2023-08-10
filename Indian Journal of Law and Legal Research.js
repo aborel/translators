@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-10 05:12:30"
+	"lastUpdated": "2023-08-10 17:11:40"
 }
 
 /*
@@ -94,6 +94,30 @@ async function scrape(nextDoc, url) {
 	if (title) {
 		item.title = title[0].textContent;
 	}
+	item.issn = '2582-8878';
+	item.publicationTitle = 'Indian Journal of Law and Legal Research';
+	item.url = url;
+	item.creators = [];
+	let possibleAuthorLines = nextDoc.querySelectorAll('p.public-DraftStyleDefault-block-depth0 > span.public-DraftStyleDefault-ltr > span');
+	for (let line of possibleAuthorLines) {
+		// lines with an author name, titles, affiliation, embed each token inside an <em> tag (including spaces and punctuation...)
+		let tokens = Array.from(line.querySelectorAll('em'));
+		if (tokens.length) {
+			Zotero.debug(line.textContent);
+			let author = {"creatorType": "author"};
+			let fullName = line.textContent.split(',')[0];
+			author.lastName = fullName.split(' ').slice(-1);
+			author.firstName = fullName.slice(0, fullName.indexOf(author.lastName));
+			Zotero.debug(author);
+			item.creators.push(author);
+		}
+
+	}
+	
+
+	let volumeLine = nextDoc.querySelectorAll('a.post-categories-list__link');
+	Zotero.debug(volumeLine.length);
+	Zotero.debug(volumeLine[0].textContent);
 
 	item.complete();
 
@@ -101,5 +125,42 @@ async function scrape(nextDoc, url) {
 
 /** BEGIN TEST CASES **/
 var testCases = [
+	{
+		"type": "web",
+		"url": "https://www.ijllr.com/post/pocso-act-a-critical-analysis",
+		"items": [
+			{
+				"itemType": "journalArticle",
+				"title": "Pocso Act: A Critical Analysis",
+				"creators": [],
+				"libraryCatalog": "Indian Journal of Law and Legal Research",
+				"publicationTitle": "Indian Journal of Law and Legal Research",
+				"shortTitle": "Pocso Act",
+				"url": "https://www.ijllr.com/post/pocso-act-a-critical-analysis",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	},
+	{
+		"type": "web",
+		"url": "https://www.ijllr.com/post/english-and-german-schools-of-legal-positivism",
+		"items": [
+			{
+				"itemType": "journalArticle",
+				"title": "English And German Schools Of Legal Positivism",
+				"creators": [],
+				"libraryCatalog": "Indian Journal of Law and Legal Research",
+				"publicationTitle": "Indian Journal of Law and Legal Research",
+				"url": "https://www.ijllr.com/post/english-and-german-schools-of-legal-positivism",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	}
 ]
 /** END TEST CASES **/
