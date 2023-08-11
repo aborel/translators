@@ -114,6 +114,14 @@ async function scrape(nextDoc, url) {
 	}
 	// TODO try some other articles, 2nd attribute doesn't inspire confidence
 	let mainBlock = nextDoc.querySelectorAll('div[type="paragraph"][data-hook="rcv-block7"]')[0].parentNode;
+	for (let strong of nextDoc.querySelectorAll('strong')) {
+		Zotero.debug([strong.innerText]);
+		if (strong.innerText.indexOf('ABSTRACT') == 0) {
+			let abstractTitleNode = strong.parentNode.parentNode.parentNode;
+			Zotero.debug(abstractTitleNode.innerHTML);
+		}
+	}
+	
 	Zotero.debug('mainBlock(s):' + mainBlock.toString());
 	let mainBlockContent = mainBlock.textContent;
 	Zotero.debug([mainBlockContent]);
