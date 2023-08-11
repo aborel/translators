@@ -119,6 +119,9 @@ async function scrape(nextDoc, url) {
 	let volumeLine = nextDoc.querySelectorAll('a.post-categories-list__link');
 	Zotero.debug(volumeLine.length);
 	Zotero.debug(volumeLine[0].textContent);
+	item.volume = volumeLine[0].textContent.match(/Volume ([^ ]+)/)[1];
+	Zotero.debug(item.volume);
+	item.issue = volumeLine[0].textContent.match(/Issue (.*)$/)[1];
 
 	item.complete();
 
