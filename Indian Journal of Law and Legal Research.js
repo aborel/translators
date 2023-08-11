@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-10 17:11:40"
+	"lastUpdated": "2023-08-11 03:53:38"
 }
 
 /*
@@ -94,7 +94,7 @@ async function scrape(nextDoc, url) {
 	if (title) {
 		item.title = title[0].textContent;
 	}
-	item.issn = '2582-8878';
+	item.ISSN = '2582-8878';
 	item.publicationTitle = 'Indian Journal of Law and Legal Research';
 	item.url = url;
 	item.creators = [];
@@ -136,11 +136,22 @@ var testCases = [
 			{
 				"itemType": "journalArticle",
 				"title": "Pocso Act: A Critical Analysis",
-				"creators": [],
+				"creators": [
+					{
+						"creatorType": "author",
+						"lastName": [
+							"Gahlot"
+						],
+						"firstName": "Yashashvi "
+					}
+				],
+				"ISSN": "2582-8878",
+				"issue": "III",
 				"libraryCatalog": "Indian Journal of Law and Legal Research",
 				"publicationTitle": "Indian Journal of Law and Legal Research",
 				"shortTitle": "Pocso Act",
 				"url": "https://www.ijllr.com/post/pocso-act-a-critical-analysis",
+				"volume": "V",
 				"attachments": [],
 				"tags": [],
 				"notes": [],
@@ -155,10 +166,28 @@ var testCases = [
 			{
 				"itemType": "journalArticle",
 				"title": "English And German Schools Of Legal Positivism",
-				"creators": [],
+				"creators": [
+					{
+						"creatorType": "author",
+						"lastName": [
+							"Mathur"
+						],
+						"firstName": "Rakshita "
+					},
+					{
+						"creatorType": "author",
+						"lastName": [
+							"Verma"
+						],
+						"firstName": "Shivam "
+					}
+				],
+				"ISSN": "2582-8878",
+				"issue": "III",
 				"libraryCatalog": "Indian Journal of Law and Legal Research",
 				"publicationTitle": "Indian Journal of Law and Legal Research",
 				"url": "https://www.ijllr.com/post/english-and-german-schools-of-legal-positivism",
+				"volume": "V",
 				"attachments": [],
 				"tags": [],
 				"notes": [],
