@@ -113,8 +113,11 @@ async function scrape(nextDoc, url) {
 		}
 	}
 	// TODO try some other articles, 2nd attribute doesn't inspire confidence
-	let mainBlock = nextDoc.querySelectorAll('div[type="paragraph"][data-hook="rcv-block7"]');
-	Zotero.debug('mainBlock(s):' + mainBlock.length.toString());
+	let mainBlock = nextDoc.querySelectorAll('div[type="paragraph"][data-hook="rcv-block7"]')[0].parentNode;
+	Zotero.debug('mainBlock(s):' + mainBlock.toString());
+	let mainBlockContent = mainBlock.textContent;
+	Zotero.debug([mainBlockContent]);
+	item.abstractNote = mainBlockContent;
 
 	let volumeLine = nextDoc.querySelectorAll('a.post-categories-list__link');
 	Zotero.debug(volumeLine.length);
