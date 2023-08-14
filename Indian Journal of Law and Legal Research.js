@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-14 17:59:18"
+	"lastUpdated": "2023-08-14 19:50:44"
 }
 
 /*
@@ -107,7 +107,8 @@ async function scrape(nextDoc, url) {
 			let author = {"creatorType": "author"};
 			let fullName = line.textContent.split(',')[0];
 			author.lastName = fullName.split(' ').slice(-1);
-			author.firstName = fullName.slice(0, fullName.indexOf(author.lastName));
+			// TODO join Array elements with a space
+			author.firstName = fullName.slice(0, fullName.indexOf(author.lastName)).toString();
 			Zotero.debug(author);
 			item.creators.push(author);
 		}
@@ -221,7 +222,20 @@ var testCases = [
 				"url": "https://www.ijllr.com/post/english-and-german-schools-of-legal-positivism",
 				"volume": "V",
 				"attachments": [],
-				"tags": [],
+				"tags": [
+					{
+						"tag": "Jurisprudence."
+					},
+					{
+						"tag": "Law"
+					},
+					{
+						"tag": "Positivism"
+					},
+					{
+						"tag": "School"
+					}
+				],
 				"notes": [],
 				"seeAlso": []
 			}
