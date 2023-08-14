@@ -119,13 +119,20 @@ async function scrape(nextDoc, url) {
 		if (strong.innerText.indexOf('ABSTRACT') == 0) {
 			let abstractTitleNode = strong.parentNode.parentNode.parentNode;
 			Zotero.debug(abstractTitleNode.innerHTML);
+			let abstractNode = abstractTitleNode.nextSibling;
+			let k = 0;
+			while (abstractNode.textContent.indexOf('Keywords') < 0 && k < 10) {
+				Zotero.debug(abstractNode.textContent);
+					abstractNode = abstractNode.nextSibling;
+					if (item.abstractNote) {
+						item.abstractNote += '\n';
+					}
+					item.abstractNote += abstractNode.textContent;
+				k += 1;
+			}
+
 		}
 	}
-	
-	Zotero.debug('mainBlock(s):' + mainBlock.toString());
-	let mainBlockContent = mainBlock.textContent;
-	Zotero.debug([mainBlockContent]);
-	item.abstractNote = mainBlockContent;
 
 	let volumeLine = nextDoc.querySelectorAll('a.post-categories-list__link');
 	Zotero.debug(volumeLine.length);
