@@ -124,7 +124,7 @@ async function scrape(nextDoc, url) {
 			Zotero.debug(abstractTitleNode.innerHTML);
 			let abstractNode = abstractTitleNode.nextSibling;
 			let k = 0;
-			while (abstractNode.textContent.indexOf('Keywords') < 0 && k < 10) {
+			while (abstractNode.textContent.indexOf('Keywords:') < 0 && k < 10) {
 				Zotero.debug(abstractNode.textContent);
 				if (abstractNode.textContent.length) {
 					if (item.abstractNote) {
@@ -134,6 +134,10 @@ async function scrape(nextDoc, url) {
 				}
 				abstractNode = abstractNode.nextSibling;		
 				k += 1;
+			}
+			if (abstractNode.textContent.indexOf('Keywords:') == 0) {
+				Zotero.debug('processing keywords line');
+				item.tags = abstractNode.parent.textContent.replace('Keywords:', '').split(', ');
 			}
 
 		}
