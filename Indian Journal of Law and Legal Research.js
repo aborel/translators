@@ -135,9 +135,13 @@ async function scrape(nextDoc, url) {
 				abstractNode = abstractNode.nextSibling;		
 				k += 1;
 			}
-			if (abstractNode.textContent.indexOf('Keywords:') == 0) {
+			Zotero.debug('Out of while() loop');
+			Zotero.debug(abstractNode.textContent);
+			Zotero.debug(abstractNode.textContent.indexOf('Keywords:'));
+			if (abstractNode.textContent.trim().indexOf('Keywords:') == 0) {
 				Zotero.debug('processing keywords line');
-				item.tags = abstractNode.parent.textContent.replace('Keywords:', '').split(', ');
+				Zotero.debug(abstractNode.textContent.replace('Keywords:', ''));
+				item.tags = abstractNode.textContent.replace('Keywords:', '').trim().split(', ');
 			}
 
 		}
