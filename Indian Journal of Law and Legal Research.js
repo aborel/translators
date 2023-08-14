@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-11 03:53:38"
+	"lastUpdated": "2023-08-14 17:59:18"
 }
 
 /*
@@ -114,6 +114,9 @@ async function scrape(nextDoc, url) {
 	}
 	// TODO try some other articles, 2nd attribute doesn't inspire confidence
 	let mainBlock = nextDoc.querySelectorAll('div[type="paragraph"][data-hook="rcv-block7"]')[0].parentNode;
+
+
+	item.abstractNote = ""
 	for (let strong of nextDoc.querySelectorAll('strong')) {
 		Zotero.debug([strong.innerText]);
 		if (strong.innerText.indexOf('ABSTRACT') == 0) {
@@ -123,11 +126,13 @@ async function scrape(nextDoc, url) {
 			let k = 0;
 			while (abstractNode.textContent.indexOf('Keywords') < 0 && k < 10) {
 				Zotero.debug(abstractNode.textContent);
-					abstractNode = abstractNode.nextSibling;
+				if (abstractNode.textContent.length) {
 					if (item.abstractNote) {
 						item.abstractNote += '\n';
 					}
 					item.abstractNote += abstractNode.textContent;
+				}
+				abstractNode = abstractNode.nextSibling;		
 				k += 1;
 			}
 
@@ -201,6 +206,7 @@ var testCases = [
 					}
 				],
 				"ISSN": "2582-8878",
+				"abstractNote": "The paper starts with the meaning of legal positivism and also explains the philosophies put forward by the different philosophers of school of legal positivism. It also connects how law in today can be related to legal positivism by using hart theory of law. The paper also looks at the aspects German Juristic School with a focus on the Grundnorm, or popularized as the basic norm. Kelsen makes the assumption that there must be a guarantee of unity for the scientific depiction of a positive-legal order, which is a hierarchy of legal propositions. This guarantee must be a part of the representation in order to be considered a legal entity. It counts as a representation of an actual standard because it is a legal statement. As a result, Kelsen elliptically refers to it as a \"basic norm (Grundnorm)\". \n\nFollowing that, the ideals of German Juristic School have also been recognized as we have delved deep into the same. Kelsen was hailed as \"undoubtedly the leading jurist of the time\" by Roscoe Pound in 1934. While in Vienna, Kelsen interacted with Sigmund Freud and his friends wrote about sociology and social psychology. \n\nTherefore, it can be concluded that the positivist school is an amalgamation of the English and German thinkers and their ideas. Their drive has caused the Realist school to flourish throughout the legal world and understand law from the most pragmatic perspective.",
 				"issue": "III",
 				"libraryCatalog": "Indian Journal of Law and Legal Research",
 				"publicationTitle": "Indian Journal of Law and Legal Research",
