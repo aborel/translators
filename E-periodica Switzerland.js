@@ -307,8 +307,8 @@ async function scrape(nextDoc, url) {
 	//Zotero.debug('Final URL ' + nextUrl);
 	var pageinfoUrl = nextUrl.replace("view", "ajax/pageinfo");
 	//Zotero.debug('JSON URL ' + pageinfoUrl);
-	let text = await requestText(pageinfoUrl);
-	var epJSON = JSON.parse(text);
+	let epText = await requestText(pageinfoUrl);
+	var epJSON = JSON.parse(epText);
 	//Zotero.debug(epJSON);
 	let risURL;
 	if (epJSON.articles.length == 0) {
@@ -327,8 +327,8 @@ async function scrape(nextDoc, url) {
 	}
 	// Zotero.debug(pdfURL);
 	if (risURL) {
-		let text = await requestText(risURL);
-		processRIS(text, url, pdfURL);
+		let risText = await requestText(risURL);
+		processRIS(risText, url, pdfURL);
 	}
 	else {
 		var item = new Zotero.Item("journalArticle");
@@ -371,13 +371,18 @@ async function scrape(nextDoc, url) {
 	}
 }
 
+<<<<<<< HEAD
 function processRIS(text, URL, pdfURL) {
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
+=======
+function processRIS(risText, URL, pdfURL) {
+>>>>>>> e2594a7f (avoid shadowing top-level name 'text')
 	// load translator for RIS
 	var translator = Zotero.loadTranslator("import");
 	translator.setTranslator("32d59d2d-b65a-4da4-b0a3-bdd3cfb979e7");
 	// Z.debug(text);
 	
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	translator.setString(risText);
@@ -401,6 +406,9 @@ function processRIS(text, URL, pdfURL) {
 =======
 >>>>>>> e551e3f4 (simplify processRIS())
 	translator.setString(text);
+=======
+	translator.setString(risText);
+>>>>>>> e2594a7f (avoid shadowing top-level name 'text')
 	translator.setHandler("itemDone", function (obj, item) {
 		// Don't save HTML snapshot from 'UR' tag
 		item.attachments = [];
