@@ -186,7 +186,6 @@ function getSearchResults(doc, checkOnly) {
 >>>>>>> cb4a7064 (multiple references in simple search mode)
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
-		// sth goes wrong when we return from here
 		if (checkOnly) return true;
 		found = true;
 		items[href] = title;
