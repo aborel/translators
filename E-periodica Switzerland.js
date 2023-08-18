@@ -154,6 +154,9 @@ function getSearchResults(doc, checkOnly) {
 	var items = {};
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7f6b528f (improve article ID extraction based on feedback)
 	// Zotero.debug(items);
 	var found = false;
 	var rows = doc.querySelectorAll('h2.ep-result__title > a');
@@ -191,12 +194,16 @@ function getSearchResults(doc, checkOnly) {
 		items[href] = title;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		// Zotero.debug(items[href]);
 =======
 >>>>>>> 734a75c7 (Single reference OK, multiple needs more work)
 =======
 		Zotero.debug(items[href]);
 >>>>>>> cb4a7064 (multiple references in simple search mode)
+=======
+		// Zotero.debug(items[href]);
+>>>>>>> 7f6b528f (improve article ID extraction based on feedback)
 	}
 	return found ? items : false;
 }
@@ -314,14 +321,20 @@ function processRIS(risText, pdfURL) {
 }
 
 async function scrape(url) {
-	var nextUrl = url;
-	//Zotero.debug('trying to process ' + nextUrl);
-	// Do we really need to handle these #-containing URLs?
-	nextUrl = nextUrl.replace("#", "%3A%3A").replace("::", "%3A%3A");
-	nextUrl = nextUrl.split("%3A%3A");
-	nextUrl = nextUrl[0] + "%3A%3A" + nextUrl.slice(-1);
-	//Zotero.debug('Final URL ' + nextUrl);
-	var pageinfoUrl = nextUrl.replace("view", "ajax/pageinfo");
+	// In general the article ID is given the pid parameter in the URL
+	// If the URL ends with a hash/fragment identifier, 
+	//  the final digits of the pid parameter (after a double colon) must be replaced with the hash ID
+	//  e.g. alp-001:1907:2::332#375 => alp-001:1907:2::375
+	let articleURL = new URL(url);
+	let articleID = articleURL.searchParams.get("pid");
+	let articleViewFragment = articleURL.hash.replace(/^#/, ""); // trim leading #
+	if (/\d+/.test(articleViewFragment)) {
+		// Normalize article ID by replacing the last segment with the real
+		// page id if any
+		articleID = articleID.replace(/::\d+$/, "::" + articleViewFragment);
+	}
+	let pageinfoUrl = "https://www.e-periodica.ch/digbib/ajax/pageinfo?pid=" + encodeURI(articleID);
+	
 	//Zotero.debug('JSON URL ' + pageinfoUrl);
 	let epJSON = await requestJSON(pageinfoUrl);
 	//Zotero.debug(epJSON);
