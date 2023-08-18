@@ -220,6 +220,7 @@ async function doWeb(doc, url) {
 	}
 	else {
 		// The journalArticle type will be applicable in general unless we find multiple refs.
+<<<<<<< HEAD
 		await scrape(url);
 	}
 }
@@ -320,6 +321,8 @@ function processRIS(risText, pdfURL) {
 	}
 	else {
 		// The fallback is not expected to be used on E-periodica, but just in case...
+=======
+>>>>>>> e89f7546 (comment updated in doWeb())
 		await scrape(url);
 	}
 }
