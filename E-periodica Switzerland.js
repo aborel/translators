@@ -210,6 +210,7 @@ function getSearchResults(doc, checkOnly) {
 
 async function doWeb(doc, url) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (detectWeb(doc, url) == 'multiple') {
 		let items = await Zotero.selectItems(getSearchResults(doc, false));
 		if (!items) return;
@@ -308,6 +309,9 @@ function processRIS(risText, pdfURL) {
 		await scrape(url);
 	}
 	else if (detectWeb(doc, url) == 'multiple') {
+=======
+	if (detectWeb(doc, url) == 'multiple') {
+>>>>>>> 30fc297e (Simplify detectweb calls)
 		let items = await Zotero.selectItems(getSearchResults(doc, false));
 		if (!items) return;
 		for (let resultUrl of Object.keys(items)) {
