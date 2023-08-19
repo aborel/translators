@@ -63,7 +63,6 @@ function getSearchResults(doc, checkOnly) {
 			items[href] = title;
 		}
 		if (checkOnly) return true;
-		
 	}
 	Zotero.debug(items);
 	return found ? items : false;
@@ -106,7 +105,7 @@ async function scrape(nextDoc) {
 		let tokens = Array.from(line.querySelectorAll('em'));
 		if (tokens.length) {
 			Zotero.debug(line.textContent);
-			let author = {"creatorType": "author"};
+			let author = { creatorType: "author" };
 			let fullName = line.textContent.split(',')[0];
 			author.lastName = fullName.split(' ').slice(-1);
 			// TODO join Array elements with a space
@@ -119,7 +118,7 @@ async function scrape(nextDoc) {
 	let mainBlock = nextDoc.querySelectorAll('div[type="paragraph"][data-hook="rcv-block7"]')[0].parentNode;
 
 
-	item.abstractNote = ""
+	item.abstractNote = "";
 	for (let strong of nextDoc.querySelectorAll('strong')) {
 		Zotero.debug([strong.innerText]);
 		if (strong.innerText.indexOf('ABSTRACT') == 0) {
@@ -135,7 +134,7 @@ async function scrape(nextDoc) {
 					}
 					item.abstractNote += abstractNode.textContent;
 				}
-				abstractNode = abstractNode.nextSibling;		
+				abstractNode = abstractNode.nextSibling;
 				k += 1;
 			}
 			Zotero.debug('Out of while() loop');
@@ -146,7 +145,6 @@ async function scrape(nextDoc) {
 				Zotero.debug(abstractNode.textContent.replace('Keywords:', ''));
 				item.tags = abstractNode.textContent.replace('Keywords:', '').trim().split(', ');
 			}
-
 		}
 	}
 
@@ -157,6 +155,7 @@ async function scrape(nextDoc) {
 	// page numbers and publication year are available in the table of contents of each issue
 	let issueUrl = 'https://www.ijllr.com/volume-' + item.volume.toLowerCase() + '-issue-' + item.issue.toLowerCase();
 	Zotero.debug(issueUrl);
+	// This apparently times out
 	let issuePage = await requestDocument(issueUrl);
 	Zotero.debug(issuePage);
 	let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
@@ -166,7 +165,6 @@ async function scrape(nextDoc) {
 	// TODO continue with issueUrl + '-page2' and so on until we get a 404?
 
 	item.complete();
-
 }
 
 /** BEGIN TEST CASES **/
