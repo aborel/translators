@@ -53,17 +53,21 @@ function getSearchResults(doc, checkOnly) {
 	var items = {};
 	var found = false;
 	// TODO adapt selector, some layers of spans might be required
-	var rows = doc.querySelectorAll('h4 > span');
+	var rows = doc.querySelectorAll('a.wixui-rich-text__text');
 	for (let row of rows) {
-		// Zotero.debug(row.innerHTML);
+		Zotero.debug(row.textContent);
 		let href = row.href;
-		// Zotero.debug(href);
+		//Zotero.debug(href);
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
+		if ((title.indexOf('http') != 0) && (href.includes('/post/'))) {
+			found = true;
+			items[href] = title;
+		}
 		if (checkOnly) return true;
-		found = true;
-		items[href] = title;
+		
 	}
+	Zotero.debug(items);
 	return found ? items : false;
 }
 
@@ -154,6 +158,16 @@ async function scrape(nextDoc, url) {
 	item.volume = volumeLine[0].textContent.match(/Volume ([^ ]+)/)[1];
 	Zotero.debug(item.volume);
 	item.issue = volumeLine[0].textContent.match(/Issue (.*)$/)[1];
+
+	// page numbers and publication year are available in the table of contents of each issue
+	let issueUrl = 'https://www.ijllr.com/volume-' + item.volume.toLowerCase() + '-issue-' + item.issue.toLowerCase();
+	Zotero.debug(issueUrl);
+	let issuePage = await requestDocument(issueUrl);
+	Zotero.debug(issuePage);
+	let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
+	Zotero.debug(articleFrames.length);
+
+	// TODO continue with issueUrl + '-page2' and so on until we get a 404?
 
 	item.complete();
 
