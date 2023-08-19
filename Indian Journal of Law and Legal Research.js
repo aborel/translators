@@ -39,10 +39,10 @@
 // multiple ref example https://www.ijllr.com/volume-v-issue-iii
 
 function detectWeb(doc, url) {
-	if (url.includes("volume")) {
+	if (url.includes("www.ijllr.com/volume")) {
 		return "multiple";
 	}
-	else if (url.includes("post")) {
+	else if (url.includes("www.ijllr.com/post")) {
 		return "journalArticle";
 	}
 	return false;
@@ -55,12 +55,10 @@ function getSearchResults(doc, checkOnly) {
 	// TODO adapt selector, some layers of spans might be required
 	var rows = doc.querySelectorAll('a.wixui-rich-text__text');
 	for (let row of rows) {
-		Zotero.debug(row.textContent);
 		let href = row.href;
-		//Zotero.debug(href);
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
-		if ((title.indexOf('http') != 0) && (href.includes('/post/'))) {
+		if ((title.indexOf('http') != 0) && (href.includes('www.ijllr.com/post/'))) {
 			found = true;
 			items[href] = title;
 		}
@@ -74,23 +72,23 @@ function getSearchResults(doc, checkOnly) {
 
 async function doWeb(doc, url) {
 	if (detectWeb(doc, url) == 'journalArticle') {
-		await scrape(doc, url);
+		await scrape(doc);
 	}
 	else if (detectWeb(doc, url) == 'multiple') {
 		let items = await Zotero.selectItems(getSearchResults(doc, false));
 		if (!items) return;
-		for (let url of Object.keys(items)) {
-			await scrape(await requestDocument(url));
+		for (let itemUrl of Object.keys(items)) {
+			await scrape(await requestDocument(itemUrl));
 		}
 	}
 	else {
 		// The fallback is not expected to be used on IJLLR, but just in case...
-		await scrape(doc, url);
+		await scrape(doc);
 	}
 }
 
 
-async function scrape(nextDoc, url) {
+async function scrape(nextDoc) {
 	var item = new Zotero.Item("journalArticle");
 	//let title = nextDoc.querySelectorAll('h1 > span.post-title__text > span.blog-post-title-font');
 	let title = nextDoc.querySelectorAll('h1.post-title');
@@ -100,7 +98,7 @@ async function scrape(nextDoc, url) {
 	}
 	item.ISSN = '2582-8878';
 	item.publicationTitle = 'Indian Journal of Law and Legal Research';
-	item.url = url;
+	item.url = nextDoc.location.href;
 	item.creators = [];
 	let possibleAuthorLines = nextDoc.querySelectorAll('p.public-DraftStyleDefault-block-depth0 > span.public-DraftStyleDefault-ltr > span');
 	for (let line of possibleAuthorLines) {
@@ -153,10 +151,7 @@ async function scrape(nextDoc, url) {
 	}
 
 	let volumeLine = nextDoc.querySelectorAll('a.post-categories-list__link');
-	Zotero.debug(volumeLine.length);
-	Zotero.debug(volumeLine[0].textContent);
 	item.volume = volumeLine[0].textContent.match(/Volume ([^ ]+)/)[1];
-	Zotero.debug(item.volume);
 	item.issue = volumeLine[0].textContent.match(/Issue (.*)$/)[1];
 
 	// page numbers and publication year are available in the table of contents of each issue
@@ -165,6 +160,7 @@ async function scrape(nextDoc, url) {
 	let issuePage = await requestDocument(issueUrl);
 	Zotero.debug(issuePage);
 	let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
+	Zotero.debug(articleFrames);
 	Zotero.debug(articleFrames.length);
 
 	// TODO continue with issueUrl + '-page2' and so on until we get a 404?
