@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-14 19:50:44"
+	"lastUpdated": "2023-08-22 07:23:36"
 }
 
 /*
@@ -155,12 +155,20 @@ async function scrape(nextDoc) {
 	// page numbers and publication year are available in the table of contents of each issue
 	let issueUrl = 'https://www.ijllr.com/volume-' + item.volume.toLowerCase() + '-issue-' + item.issue.toLowerCase();
 	Zotero.debug(issueUrl);
+	await requestDocument(issueUrl).then((issuePage) => {
+		Zotero.debug('hello!');
+		// Really a problem when trying to use the response... 
+		// Zotero.debug(issuePage);
+		// let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
+		// Zotero.debug(articleFrames.length);
+	});
+
 	// This apparently times out
-	let issuePage = await requestDocument(issueUrl);
-	Zotero.debug(issuePage);
-	let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
-	Zotero.debug(articleFrames);
-	Zotero.debug(articleFrames.length);
+	// Zotero.debug(issuePage);
+	// let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
+	// Zotero.debug(articleFrames);
+	// 
+
 
 	// TODO continue with issueUrl + '-page2' and so on until we get a 404?
 
