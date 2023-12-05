@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-07-23 10:37:03"
+	"lastUpdated": "2023-08-15 20:15:50"
 }
 
 /*
@@ -39,7 +39,7 @@ function detectWeb(doc, url) {
 	if (url.includes('/digbib/view')) {
 		return "journalArticle";
 	}
-	else if (url.includes('/digbib/doasearch') && getSearchResults(doc, true)) {
+	else if (getSearchResults(doc, true)) {
 		return "multiple";
 	}
 	else {
@@ -49,50 +49,54 @@ function detectWeb(doc, url) {
 
 function getSearchResults(doc, checkOnly) {
 	var items = {};
+	// Zotero.debug(items);
 	var found = false;
 	var rows = doc.querySelectorAll('h2.ep-result__title > a');
 	for (let row of rows) {
-		// Zotero.debug(row.innerHTML);
+		//Zotero.debug(row.textContent);
 		let href = row.href;
-		// Zotero.debug(href);
+		//Zotero.debug(href);
 		let title = ZU.trimInternal(row.textContent);
 		if (!href || !title) continue;
 		if (checkOnly) return true;
 		found = true;
 		items[href] = title;
+		// Zotero.debug(items[href]);
 	}
 	return found ? items : false;
 }
 
 async function doWeb(doc, url) {
-	if (detectWeb(doc, url) == 'journalArticle') {
-		await scrape(doc, url);
-	}
-	else if (detectWeb(doc, url) == 'multiple') {
+	if (detectWeb(doc, url) == 'multiple') {
 		let items = await Zotero.selectItems(getSearchResults(doc, false));
 		if (!items) return;
-		for (let url of Object.keys(items)) {
-			await scrape(await requestDocument(url));
+		for (let resultUrl of Object.keys(items)) {
+			await scrape(resultUrl);
 		}
 	}
 	else {
-		// The fallback is not expected to be used on E-periodica, but just in case...
-		await scrape(doc, url);
+		// The journalArticle type will be applicable in general unless we find multiple refs.
+		await scrape(url);
 	}
 }
 
-async function scrape(nextDoc, url) {
-	var nextUrl = nextDoc.location.href;
-	//Zotero.debug('trying to process ' + nextUrl);
-	// Do we really need to handle these #-containing URLs?
-	nextUrl = nextUrl.replace("#", "%3A%3A").replace("::", "%3A%3A");
-	nextUrl = nextUrl.split("%3A%3A");
-	nextUrl = nextUrl[0] + "%3A%3A" + nextUrl.slice(-1);
-	//Zotero.debug('Final URL ' + nextUrl);
-	var pageinfoUrl = nextUrl.replace("view", "ajax/pageinfo");
+async function scrape(url) {
+	// In general the article ID is given the pid parameter in the URL
+	// If the URL ends with a hash/fragment identifier,
+	//  the final digits of the pid parameter (after a double colon) must be replaced with the hash ID
+	//  e.g. alp-001:1907:2::332#375 => alp-001:1907:2::375
+	let articleURL = new URL(url);
+	let articleID = articleURL.searchParams.get("pid");
+	let articleViewFragment = articleURL.hash.replace(/^#/, ""); // trim leading #
+	if (/\d+/.test(articleViewFragment)) {
+		// Normalize article ID by replacing the last segment with the real
+		// page id if any
+		articleID = articleID.replace(/::\d+$/, "::" + articleViewFragment);
+	}
+	let pageinfoUrl = "https://www.e-periodica.ch/digbib/ajax/pageinfo?pid=" + encodeURIComponent(articleID);
+	
 	//Zotero.debug('JSON URL ' + pageinfoUrl);
-	let text = await requestText(pageinfoUrl);
-	var epJSON = JSON.parse(text);
+	let epJSON = await requestJSON(pageinfoUrl);
 	//Zotero.debug(epJSON);
 	let risURL;
 	if (epJSON.articles.length == 0) {
@@ -111,8 +115,8 @@ async function scrape(nextDoc, url) {
 	}
 	// Zotero.debug(pdfURL);
 	if (risURL) {
-		let text = await requestText(risURL);
-		processRIS(text, url, pdfURL);
+		let risText = await requestText(risURL);
+		processRIS(risText, pdfURL);
 	}
 	else {
 		var item = new Zotero.Item("journalArticle");
@@ -155,13 +159,13 @@ async function scrape(nextDoc, url) {
 	}
 }
 
-function processRIS(text, URL, pdfURL) {
+function processRIS(risText, pdfURL) {
 	// load translator for RIS
 	var translator = Zotero.loadTranslator("import");
 	translator.setTranslator("32d59d2d-b65a-4da4-b0a3-bdd3cfb979e7");
 	// Z.debug(text);
 	
-	translator.setString(text);
+	translator.setString(risText);
 	translator.setHandler("itemDone", function (obj, item) {
 		// Don't save HTML snapshot from 'UR' tag
 		item.attachments = [];
