@@ -126,7 +126,7 @@ async function scrape(nextDoc) {
 			Zotero.debug(abstractTitleNode.innerHTML);
 			let abstractNode = abstractTitleNode.nextSibling;
 			let k = 0;
-			while (abstractNode.textContent.indexOf('Keywords:') < 0 && k < 10) {
+			while (!abstractNode.textContent.includes('Keywords:') && k < 10) {
 				Zotero.debug(abstractNode.textContent);
 				if (abstractNode.textContent.length) {
 					if (item.abstractNote) {
@@ -157,7 +157,7 @@ async function scrape(nextDoc) {
 	Zotero.debug(issueUrl);
 	await requestDocument(issueUrl).then((issuePage) => {
 		Zotero.debug('hello!');
-		// Really a problem when trying to use the response... 
+		// Really a problem when trying to use the response...
 		// Zotero.debug(issuePage);
 		// let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
 		// Zotero.debug(articleFrames.length);
@@ -167,7 +167,7 @@ async function scrape(nextDoc) {
 	// Zotero.debug(issuePage);
 	// let articleFrames = issuePage.querySelectorAll('div[data-testid="mesh-container-content]');
 	// Zotero.debug(articleFrames);
-	// 
+	//
 
 
 	// TODO continue with issueUrl + '-page2' and so on until we get a 404?
