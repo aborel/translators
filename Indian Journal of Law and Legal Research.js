@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2023-08-22 07:23:36"
+	"lastUpdated": "2024-02-04 12:07:12"
 }
 
 /*
@@ -99,15 +99,17 @@ async function scrape(nextDoc) {
 	item.publicationTitle = 'Indian Journal of Law and Legal Research';
 	item.url = nextDoc.location.href;
 	item.creators = [];
-	let possibleAuthorLines = nextDoc.querySelectorAll('p.public-DraftStyleDefault-block-depth0 > span.public-DraftStyleDefault-ltr > span');
+	let possibleAuthorLines = nextDoc.querySelectorAll('span.UYHF3 > span');
+	Zotero.debug(possibleAuthorLines.length);
 	for (let line of possibleAuthorLines) {
-		// lines with an author name, titles, affiliation, embed each token inside an <em> tag (including spaces and punctuation...)
-		let tokens = Array.from(line.querySelectorAll('em'));
+		// lines with an author name, titles, affiliation, embed each token inside a <span> tag (including spaces and punctuation...)
+		Zotero.debug(line.textContent);
+		let tokens = Array.from(line.querySelectorAll('span'));
 		if (tokens.length) {
 			Zotero.debug(line.textContent);
 			let author = { creatorType: "author" };
 			let fullName = line.textContent.split(',')[0];
-			author.lastName = fullName.split(' ').slice(-1);
+			author.lastName = fullName.split(' ').slice(-1)[0];
 			// TODO join Array elements with a space
 			author.firstName = fullName.slice(0, fullName.indexOf(author.lastName)).toString();
 			Zotero.debug(author);
