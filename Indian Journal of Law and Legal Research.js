@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2024-02-04 12:07:12"
+	"lastUpdated": "2024-02-04 12:16:24"
 }
 
 /*
@@ -121,15 +121,15 @@ async function scrape(nextDoc) {
 
 
 	item.abstractNote = "";
-	for (let strong of nextDoc.querySelectorAll('strong')) {
+	for (let strong of nextDoc.querySelectorAll('div > p > span > span > span')) {
 		Zotero.debug([strong.innerText]);
 		if (strong.innerText.indexOf('ABSTRACT') == 0) {
-			let abstractTitleNode = strong.parentNode.parentNode.parentNode;
+			let abstractTitleNode = strong.parentNode.parentNode.parentNode.parentNode;
 			Zotero.debug(abstractTitleNode.innerHTML);
 			let abstractNode = abstractTitleNode.nextSibling;
 			let k = 0;
 			while (!abstractNode.textContent.includes('Keywords:') && k < 10) {
-				Zotero.debug(abstractNode.textContent);
+				Zotero.debug('ABSTRACT LINE: ', abstractNode.textContent);
 				if (abstractNode.textContent.length) {
 					if (item.abstractNote) {
 						item.abstractNote += '\n';
