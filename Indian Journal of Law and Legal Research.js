@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2024-02-04 12:16:24"
+	"lastUpdated": "2024-02-04 13:12:16"
 }
 
 /*
@@ -219,16 +219,12 @@ var testCases = [
 				"creators": [
 					{
 						"creatorType": "author",
-						"lastName": [
-							"Mathur"
-						],
+						"lastName": "Mathur",
 						"firstName": "Rakshita "
 					},
 					{
 						"creatorType": "author",
-						"lastName": [
-							"Verma"
-						],
+						"lastName": "Verma",
 						"firstName": "Shivam "
 					}
 				],
