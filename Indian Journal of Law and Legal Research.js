@@ -99,7 +99,7 @@ async function scrape(nextDoc) {
 	item.publicationTitle = 'Indian Journal of Law and Legal Research';
 	item.url = nextDoc.location.href;
 	item.creators = [];
-	let possibleAuthorLines = nextDoc.querySelectorAll('span.UYHF3 > span');
+	let possibleAuthorLines = nextDoc.querySelectorAll('span.UYHF3 > span[style="font-style:italic"]');
 	Zotero.debug(possibleAuthorLines.length);
 	for (let line of possibleAuthorLines) {
 		// lines with an author name, titles, affiliation, embed each token inside a <span> tag (including spaces and punctuation...)
@@ -189,9 +189,7 @@ var testCases = [
 				"creators": [
 					{
 						"creatorType": "author",
-						"lastName": [
-							"Gahlot"
-						],
+						"lastName": "Gahlot",
 						"firstName": "Yashashvi "
 					}
 				],
