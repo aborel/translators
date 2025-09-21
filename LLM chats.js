@@ -120,7 +120,52 @@ const PLATFORMS = {
 			]
 		},
 		rights: "© OpenAI"
+	},
+
+	"mistral.ai": {
+		company: "Frontier AI",
+		defaultToolName: "Mistral",
+		urlPattern: /chat\.mistral\.ai/,
+		selectors: {
+			title: [
+				'[data-testid="conversation-title"]',
+				'.conversation-title',
+				'h1',
+				'[role="heading"]',
+				'title'
+			],
+			userMessage: [
+				'[data-message-author-role="user"]',
+				'.user-message',
+				'[role="user"]',
+				'.human-message',
+				'[data-testid="user-message"]'
+			],
+			assistantMessage: [
+				'[data-message-author-role="assistant"]',
+				'.assistant-message',
+				'[role="assistant"]',
+				'.gpt-message',
+				'[data-testid="assistant-message"]'
+			],
+			timestamp: [
+				'[data-testid="conversation-timestamp"]',
+				'.timestamp',
+				'time',
+				'[datetime]',
+				'.message-timestamp'
+			],
+			model: [
+				'[data-testid="model-switcher"]',
+				'.model-name',
+				'[aria-label*="Mistral"]',
+				'.model-selector',
+				'[title*="Mistral"]'
+			]
+		},
+		rights: "© Frontier AI"
 	}
+
 };
 
 
@@ -236,18 +281,6 @@ function doWeb(doc, url) {
 	
 	let { domain, config } = platformInfo;
 
-	// Author: AI Company Name
-	item.creators.push({
-		firstName: "",
-		lastName: config.company,
-		creatorType: "author"
-	});
-
-	const itemcreators = {
-		"claude.ai": "Anthropic",
-		"chatgpt.com": "OpenAI",
-	}
-	
 	// Author: AI Company Name
 	item.creators.push({
 		firstName: "",
