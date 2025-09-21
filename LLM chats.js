@@ -2,14 +2,14 @@
 	"translatorID": "5183b1ac-9ddf-452b-8634-911029d07851",
 	"label": "LLM chats",
 	"creator": "Alain Borel",
-	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/)",
+	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/|chat\\.mistral\\.ai)",
 	"minVersion": "6.0",
 	"maxVersion": "",
 	"priority": 100,
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-09-21 07:01:09"
+	"lastUpdated": "2025-09-21 09:54:41"
 }
 
 /*
@@ -81,7 +81,7 @@ const PLATFORMS = {
 	"chatgpt.com": {
 		company: "OpenAI",
 		defaultToolName: "ChatGPT",
-		urlPattern: /chatgpt\.com\//,
+		urlPattern: /(chatgpt\.com|chat\.openai\.com)/,
 		selectors: {
 			title: [
 				'[data-testid="conversation-title"]',
@@ -117,46 +117,6 @@ const PLATFORMS = {
 				'[aria-label*="GPT"]',
 				'.model-selector',
 				'[title*="GPT"]'
-			]
-		},
-		rights: "© OpenAI"
-	},
-	
-	"chat.openai.com": {
-		company: "OpenAI",
-		defaultToolName: "ChatGPT",
-		urlPattern: /chat\.openai\.com\//,
-		selectors: {
-			title: [
-				'[data-testid="conversation-title"]',
-				'.conversation-title',
-				'h1',
-				'nav h1',
-				'title'
-			],
-			userMessage: [
-				'[data-message-author-role="user"]',
-				'.user-message',
-				'[role="user"]',
-				'.human-message'
-			],
-			assistantMessage: [
-				'[data-message-author-role="assistant"]',
-				'.assistant-message',
-				'[role="assistant"]',
-				'.gpt-message'
-			],
-			timestamp: [
-				'.timestamp',
-				'time',
-				'[datetime]',
-				'[data-testid*="time"]'
-			],
-			model: [
-				'[data-testid="model-switcher"]',
-				'.model-name',
-				'[aria-label*="GPT"]',
-				'button[aria-label*="model"]'
 			]
 		},
 		rights: "© OpenAI"
@@ -348,6 +308,40 @@ var testCases = [
 				"rights": "© Anthropic",
 				"url": "https://claude.ai/share/aa94e62a-d95e-4753-ac54-8ac43380c5b7",
 				"websiteTitle": "Claude",
+				"websiteType": "Generative AI chat",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	},
+	{
+		"type": "web",
+		"url": "https://chatgpt.com/share/68cfbfa8-20b8-8013-a80a-50c016c2ff26",
+		"items": [
+			{
+				"itemType": "webpage",
+				"title": "Meaning of life discussion",
+				"creators": [
+					{
+						"firstName": "",
+						"lastName": "OpenAI",
+						"creatorType": "author"
+					},
+					{
+						"firstName": "",
+						"lastName": "OpenAI",
+						"creatorType": "author"
+					}
+				],
+				"date": "2025-09-21",
+				"abstractNote": "User: what is the meaning of life\n\nAssistant: That’s one of the deepest questions humans have ever asked.\nPhilosophers, scientists, and spiritual traditions all approach it differently:\n\n\nPhilosophy: Some argue life’s meaning is something we crea...",
+				"extra": "Platform: chatgpt.com",
+				"language": "en",
+				"rights": "© OpenAI",
+				"url": "https://chatgpt.com/share/68cfbfa8-20b8-8013-a80a-50c016c2ff26",
+				"websiteTitle": "ChatGPT",
 				"websiteType": "Generative AI chat",
 				"attachments": [],
 				"tags": [],
