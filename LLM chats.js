@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-09-21 09:54:41"
+	"lastUpdated": "2025-09-21 10:49:36"
 }
 
 /*
@@ -418,6 +418,63 @@ var testCases = [
 				"rights": "© OpenAI",
 				"url": "https://chatgpt.com/share/68cfbfa8-20b8-8013-a80a-50c016c2ff26",
 				"websiteTitle": "ChatGPT",
+				"websiteType": "Generative AI chat",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	},
+	{
+		"type": "web",
+		"url": "https://chat.deepseek.com/share/un1ogabztmju2mn2bv",
+		"items": [
+			{
+				"itemType": "webpage",
+				"title": "DeepSeek - Into the Unknown",
+				"creators": [
+					{
+						"firstName": "",
+						"lastName": "DeepSeek",
+						"creatorType": "author"
+					}
+				],
+				"date": "2025-09-21",
+				"extra": "Platform: deepseek.com",
+				"language": "en",
+				"rights": "© DeepSeek",
+				"url": "https://chat.deepseek.com/share/un1ogabztmju2mn2bv",
+				"websiteTitle": "DeepSeek",
+				"websiteType": "Generative AI chat",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	},
+	{
+		"type": "web",
+		"url": "https://chat.mistral.ai/chat/8db6db48-7394-44a3-8906-b4d2d874e3bc",
+		"items": [
+			{
+				"itemType": "webpage",
+				"title": "quel est le sens de la vie?",
+				"creators": [
+					{
+						"firstName": "",
+						"lastName": "Frontier AI",
+						"creatorType": "author"
+					}
+				],
+				"date": "2025-09-21",
+				"abstractNote": "User: quel est le sens de la vie?8:27am\n\nAssistant: La question du sens de la vie est l’une des plus anciennes et des plus profondes de l’humanité ! Selon les philosophies, les cultures et les croyances, les réponses varient énormément.\nQuelques perspe...",
+				"extra": "Platform: mistral.ai",
+				"language": "en",
+				"rights": "© Frontier AI",
+				"url": "https://chat.mistral.ai/chat/8db6db48-7394-44a3-8906-b4d2d874e3bc",
+				"websiteTitle": "Mistral",
 				"websiteType": "Generative AI chat",
 				"attachments": [],
 				"tags": [],
