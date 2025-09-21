@@ -242,7 +242,7 @@ function findElementBySelectors(doc, selectors) {
 	return null;
 }
 
-function extractTitle(doc, config, url) {
+function extractTitle(doc, config) {
 	// Try platform-specific title selectors
 	let titleElement = findElementBySelectors(doc, config.selectors.title);
 	if (titleElement) {
@@ -271,26 +271,26 @@ function extractDate(doc, config) {
 	// Look for date elements using platform-specific selectors
 	let dateElement = findElementBySelectors(doc, config.selectors.timestamp);
 	if (dateElement) {
-		let dateText = dateElement.getAttribute('datetime') || 
-					   dateElement.getAttribute('title') || 
-					   dateElement.textContent;
+		let dateText = dateElement.getAttribute('datetime')
+						|| dateElement.getAttribute('title')
+						|| dateElement.textContent;
 		let parsedDate = new Date(dateText);
 		if (!isNaN(parsedDate)) {
 			date = parsedDate;
 		}
 	}
 	
-	return date.getFullYear() + "-" + 
-		   String(date.getMonth() + 1).padStart(2, '0') + "-" + 
-		   String(date.getDate()).padStart(2, '0');
+	return date.getFullYear() + "-"
+			+ String(date.getMonth() + 1).padStart(2, '0') + "-"
+			+ String(date.getDate()).padStart(2, '0');
 }
 
 function extractModel(doc, config) {
 	let modelElement = findElementBySelectors(doc, config.selectors.model);
 	if (modelElement) {
-		let modelText = modelElement.textContent.trim() || 
-						modelElement.getAttribute('aria-label') || 
-						modelElement.getAttribute('title');
+		let modelText = modelElement.textContent.trim()
+						|| modelElement.getAttribute('aria-label')
+						|| modelElement.getAttribute('title');
 		if (modelText) {
 			// Clean up model name
 			return modelText.replace(/^(Model: |Using )/i, '').trim();
@@ -307,8 +307,8 @@ function extractAbstract(doc, config) {
 	if (firstUserMessage && firstAssistantMessage) {
 		let userText = firstUserMessage.textContent.trim().substring(0, 200);
 		let assistantText = firstAssistantMessage.textContent.trim().substring(0, 200);
-		return "User: " + userText + (userText.length === 200 ? "..." : "") + 
-			   "\n\nAssistant: " + assistantText + (assistantText.length === 200 ? "..." : "");
+		return "User: " + userText + (userText.length === 200 ? "..." : "")
+				+ "\n\nAssistant: " + assistantText + (assistantText.length === 200 ? "..." : "");
 	}
 	
 	return "";
@@ -332,7 +332,7 @@ function doWeb(doc, url) {
 	});
 	
 	// Title: Title of chat
-	item.title = extractTitle(doc, config, url);
+	item.title = extractTitle(doc, config);
 	
 	// Date: year, month day
 	item.date = extractDate(doc, config);
