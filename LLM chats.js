@@ -2,7 +2,7 @@
 	"translatorID": "5183b1ac-9ddf-452b-8634-911029d07851",
 	"label": "LLM chats",
 	"creator": "Alain Borel",
-	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/|chat\\.mistral\\.ai|chat\\.deepseek\\.com)",
+	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/|chat\\.mistral\\.ai|chat\\.deepseek\\.com|aistudio\\.google\\.com|chat\\.publicai\\.co\\/c)",
 	"minVersion": "6.0",
 	"maxVersion": "",
 	"priority": 100,
@@ -208,6 +208,93 @@ const PLATFORMS = {
 			]
 		},
 		rights: "© DeepSeek"
+	},
+	"aistudio.google.com": {
+		company: "Google",
+		defaultToolName: "Gemma",
+		urlPattern: /aistudio\.google\.com\/app\/u\/1/,
+		selectors: {
+			title: [
+				'[data-testid="conversation-title"]',
+				'.conversation-title',
+				'h1',
+				'[role="heading"]',
+				'title'
+			],
+			userMessage: [
+				'[data-message-author-role="user"]',
+				'.user-message',
+				'[role="user"]',
+				'.human-message',
+				'[data-testid="user-message"]'
+			],
+			assistantMessage: [
+				'[data-message-author-role="assistant"]',
+				'.assistant-message',
+				'[role="assistant"]',
+				'.gpt-message',
+				'[data-testid="assistant-message"]'
+			],
+			timestamp: [
+				'[data-testid="conversation-timestamp"]',
+				'.timestamp',
+				'time',
+				'[datetime]',
+				'.message-timestamp'
+			],
+			model: [
+				'[data-testid="model-switcher"]',
+				'.model-name',
+				'[aria-label*="Mistral"]',
+				'.model-selector',
+				'[title*="Mistral"]'
+			]
+		},
+		rights: "© Google"
+	},
+
+	"chat.publicai.co": {
+		company: "PublicAI",
+		defaultToolName: "Apertus",
+		urlPattern: /chat\.publicai\.co\/c/,
+		selectors: {
+			title: [
+				'[data-testid="conversation-title"]',
+				'.conversation-title',
+				'h1',
+				'[role="heading"]',
+				'title'
+			],
+			userMessage: [
+				'[data-message-author-role="user"]',
+				'.user-message',
+				'[role="user"]',
+				'.human-message',
+				'[data-testid="user-message"]'
+			],
+			assistantMessage: [
+				'[data-message-author-role="assistant"]',
+				'.assistant-message',
+				'[role="assistant"]',
+				'.gpt-message',
+				'[data-testid="assistant-message"]'
+			],
+			timestamp: [
+				'[data-testid="conversation-timestamp"]',
+				'.timestamp',
+				'time',
+				'[datetime]',
+				'.message-timestamp'
+			],
+			model: [
+				'[data-testid="model-switcher"]',
+				'.model-name',
+				'[aria-label*="Mistral"]',
+				'.model-selector',
+				'[title*="Mistral"]'
+			]
+		},
+		rights: "© Public AI"
 	}
 };
 
