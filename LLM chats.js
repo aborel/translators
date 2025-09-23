@@ -9,7 +9,7 @@
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-09-21 10:49:36"
+	"lastUpdated": "2025-09-22 10:37:00"
 }
 
 /*
@@ -444,9 +444,6 @@ function doWeb(doc, url) {
 		item.abstractNote = abstract;
 	}
 	
-	// Add platform identifier in extra field for reference
-	item.extra = "Platform: " + domain;
-	
 	item.complete();
 }
 
@@ -500,7 +497,6 @@ var testCases = [
 				],
 				"date": "2025-09-21",
 				"abstractNote": "User: what is the meaning of life\n\nAssistant: That’s one of the deepest questions humans have ever asked.\nPhilosophers, scientists, and spiritual traditions all approach it differently:\n\n\nPhilosophy: Some argue life’s meaning is something we crea...",
-				"extra": "Platform: chatgpt.com",
 				"language": "en",
 				"rights": "© OpenAI",
 				"url": "https://chatgpt.com/share/68cfbfa8-20b8-8013-a80a-50c016c2ff26",
@@ -528,7 +524,6 @@ var testCases = [
 					}
 				],
 				"date": "2025-09-21",
-				"extra": "Platform: deepseek.com",
 				"language": "en",
 				"rights": "© DeepSeek",
 				"url": "https://chat.deepseek.com/share/un1ogabztmju2mn2bv",
@@ -557,7 +552,6 @@ var testCases = [
 				],
 				"date": "2025-09-21",
 				"abstractNote": "User: quel est le sens de la vie?8:27am\n\nAssistant: La question du sens de la vie est l’une des plus anciennes et des plus profondes de l’humanité ! Selon les philosophies, les cultures et les croyances, les réponses varient énormément.\nQuelques perspe...",
-				"extra": "Platform: mistral.ai",
 				"language": "en",
 				"rights": "© Frontier AI",
 				"url": "https://chat.mistral.ai/chat/8db6db48-7394-44a3-8906-b4d2d874e3bc",
