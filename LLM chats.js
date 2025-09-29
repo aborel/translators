@@ -2,14 +2,14 @@
 	"translatorID": "5183b1ac-9ddf-452b-8634-911029d07851",
 	"label": "LLM chats",
 	"creator": "Alain Borel",
-	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/|chat\\.mistral\\.ai|chat\\.deepseek\\.com|aistudio\\.google\\.com|chat\\.publicai\\.co\\/c)",
+	"target": "^https://(claude\\.ai/|chatgpt\\.com/|chat\\.openai\\.com/|chat\\.mistral\\.ai|chat\\.deepseek\\.com|aistudio\\.google\\.com|chat\\.publicai\\.co\\/|openwebui\\.com\\/c\\/)",
 	"minVersion": "6.0",
 	"maxVersion": "",
 	"priority": 100,
 	"inRepository": true,
 	"translatorType": 4,
 	"browserSupport": "gcsibv",
-	"lastUpdated": "2025-09-22 10:37:00"
+	"lastUpdated": "2025-09-29 14:29:32"
 }
 
 /*
@@ -56,10 +56,14 @@ const PLATFORMS = {
 				'.human-message'
 			],
 			assistantMessage: [
+				/*
 				'[data-testid="assistant-message"]',
 				'.assistant-message',
 				'[role="assistant"]',
-				'.claude-message'
+				'.claude-message',
+				'font-claude-response'
+				*/
+				'.font-claude-response'
 			],
 			timestamp: [
 				'[data-testid="message-timestamp"]',
@@ -75,7 +79,8 @@ const PLATFORMS = {
 				'.model-selector'
 			]
 		},
-		rights: "© Anthropic"
+		rights: "© Anthropic",
+		dateFinder: null
 	},
 	
 	"chatgpt.com": {
@@ -119,7 +124,8 @@ const PLATFORMS = {
 				'[title*="GPT"]'
 			]
 		},
-		rights: "© OpenAI"
+		rights: "© OpenAI",
+		dateFinder: null
 	},
 
 	"mistral.ai": {
@@ -135,11 +141,7 @@ const PLATFORMS = {
 				'title'
 			],
 			userMessage: [
-				'[data-message-author-role="user"]',
-				'.user-message',
-				'[role="user"]',
-				'.human-message',
-				'[data-testid="user-message"]'
+				'[data-message-author-role="user"] .select-text'
 			],
 			assistantMessage: [
 				'[data-message-author-role="assistant"]',
@@ -163,7 +165,8 @@ const PLATFORMS = {
 				'[title*="Mistral"]'
 			]
 		},
-		rights: "© Frontier AI"
+		rights: "© Frontier AI",
+		dateFinder: mistralDate
 	},
 
 	"deepseek.com": {
@@ -175,22 +178,13 @@ const PLATFORMS = {
 				'[data-testid="conversation-title"]',
 				'.conversation-title',
 				'h1',
-				'[role="heading"]',
-				'title'
+				'[role="heading"]'
 			],
 			userMessage: [
-				'[data-message-author-role="user"]',
-				'.user-message',
-				'[role="user"]',
-				'.human-message',
-				'[data-testid="user-message"]'
+				'.fbb737a4'
 			],
 			assistantMessage: [
-				'[data-message-author-role="assistant"]',
-				'.assistant-message',
-				'[role="assistant"]',
-				'.gpt-message',
-				'[data-testid="assistant-message"]'
+				'.ds-markdown-paragraph	'
 			],
 			timestamp: [
 				'[data-testid="conversation-timestamp"]',
@@ -207,7 +201,8 @@ const PLATFORMS = {
 				'[title*="Mistral"]'
 			]
 		},
-		rights: "© DeepSeek"
+		rights: "© DeepSeek",
+		dateFinder: null
 	},
 	"aistudio.google.com": {
 		company: "Google",
@@ -250,7 +245,8 @@ const PLATFORMS = {
 				'[title*="Mistral"]'
 			]
 		},
-		rights: "© Google"
+		rights: "© Google",
+		dateFinder: null
 	},
 
 	"chat.publicai.co": {
@@ -294,8 +290,43 @@ const PLATFORMS = {
 				'[title*="Mistral"]'
 			]
 		},
-		rights: "© Public AI"
-	}
+		rights: "© Public AI",
+		dateFinder: null
+	},
+	"openwebui.com": {
+		company: "OpenWebUI",
+		defaultToolName: "OpenWebUIk",
+		urlPattern: /openwebui\.com\/c/,
+		selectors: {
+			title: [
+				'input.w-full'
+			],
+			userMessage: [
+				'.chat-user'
+
+			],
+			assistantMessage: [
+				'.chat-assistant'
+			],
+			timestamp: [
+				'[data-testid="conversation-timestamp"]',
+				'.timestamp',
+				'time',
+				'[datetime]',
+				'.message-timestamp'
+			],
+			model: [
+				'[data-testid="model-switcher"]',
+				'.model-name',
+				'[aria-label*="Mistral"]',
+				'.model-selector',
+				'[title*="Mistral"]'
+			]
+		},
+		rights: "© OpenWebUI",
+		dateFinder: null
+	},
+
 };
 
 
@@ -313,17 +344,24 @@ function detectWeb(doc, url) {
 function getPlatformConfig(url) {
 	for (let domain in PLATFORMS) {
 		if (PLATFORMS[domain].urlPattern.test(url)) {
-			return { domain, config: PLATFORMS[domain] };
+			return PLATFORMS[domain];
 		}
 	}
 	return null;
 }
 
-function findElementBySelectors(doc, selectors) {
+function findElementBySelectors(doc, selectors, index) {
 	for (let selector of selectors) {
-		let element = doc.querySelector(selector);
-		if (element && element.textContent.trim()) {
-			return element;
+		let elements = doc.querySelectorAll(selector);
+		if (index >= 0) {
+			if (elements.length > 0 && elements[index].textContent.trim()) {
+				return elements[index];
+			}
+		}
+		else {
+			if (elements.length > 0 && elements[elements.length - 1].textContent.trim()) {
+				return elements[elements.length - 1];
+			}
 		}
 	}
 	return null;
@@ -331,7 +369,7 @@ function findElementBySelectors(doc, selectors) {
 
 function extractTitle(doc, config) {
 	// Try platform-specific title selectors
-	let titleElement = findElementBySelectors(doc, config.selectors.title);
+	let titleElement = findElementBySelectors(doc, config.selectors.title, 0);
 	if (titleElement) {
 		let title = titleElement.textContent.trim();
 		// Filter out generic titles
@@ -341,7 +379,7 @@ function extractTitle(doc, config) {
 	}
 	
 	// Fallback: extract from first user message
-	let firstMessage = findElementBySelectors(doc, config.selectors.userMessage);
+	let firstMessage = findElementBySelectors(doc, config.selectors.userMessage, 0);
 	if (firstMessage) {
 		let messageText = firstMessage.textContent.trim();
 		// Use first 50 characters as title
@@ -352,6 +390,7 @@ function extractTitle(doc, config) {
 	return config.defaultToolName + " Chat";
 }
 
+/*
 function extractDate(doc, config) {
 	let date = new Date();
 	
@@ -371,9 +410,28 @@ function extractDate(doc, config) {
 			+ String(date.getMonth() + 1).padStart(2, '0') + "-"
 			+ String(date.getDate()).padStart(2, '0');
 }
+*/
+
+function mistralDate(doc) {
+	let dateElement = findElementBySelectors(doc, ['div.text-hint.text-sm'], -1);
+	if (dateElement) {
+		Zotero.debug("mistralDate found something");
+		Zotero.debug(dateElement.textContent);
+		return dateElement.textContent;
+	}
+}
+
+function extractDate(doc, config) {
+	if (config.dateFinder) {
+		return config.dateFinder(doc);
+	}
+	else {
+		return "[n.d.]";
+	}
+}
 
 function extractModel(doc, config) {
-	let modelElement = findElementBySelectors(doc, config.selectors.model);
+	let modelElement = findElementBySelectors(doc, config.selectors.model, 0);
 	if (modelElement) {
 		let modelText = modelElement.textContent.trim()
 						|| modelElement.getAttribute('aria-label')
@@ -388,9 +446,12 @@ function extractModel(doc, config) {
 }
 
 function extractAbstract(doc, config) {
-	let firstUserMessage = findElementBySelectors(doc, config.selectors.userMessage);
-	let firstAssistantMessage = findElementBySelectors(doc, config.selectors.assistantMessage);
+	let firstUserMessage = findElementBySelectors(doc, config.selectors.userMessage, 0);
+	let firstAssistantMessage = findElementBySelectors(doc, config.selectors.assistantMessage, 0);
 	
+	Zotero.debug(firstUserMessage.textContent);
+	Zotero.debug(firstAssistantMessage.textContent);
+
 	if (firstUserMessage && firstAssistantMessage) {
 		let userText = firstUserMessage.textContent.trim().substring(0, 200);
 		let assistantText = firstAssistantMessage.textContent.trim().substring(0, 200);
@@ -404,12 +465,10 @@ function extractAbstract(doc, config) {
 function doWeb(doc, url) {
 	let item = new Zotero.Item("webpage");
 
-	let platformInfo = getPlatformConfig(url);
-	if (!platformInfo) {
+	let config = getPlatformConfig(url);
+	if (!config) {
 		throw new Error("Unsupported platform");
 	}
-	
-	let { domain, config } = platformInfo;
 
 	// Author: AI Company Name
 	item.creators.push({
@@ -463,7 +522,8 @@ var testCases = [
 						"creatorType": "author"
 					}
 				],
-				"date": "2025-09-21",
+				"date": "[n.d.]",
+				"abstractNote": "User: I need a simple chat that I can share as a public read-only link.\n\nAssistant: I'll create a simple chat interface for you that can be shared as a public read-only link. This will be a clean, functional chat application that you can save and share.Simple Chat InterfaceInteractiv...",
 				"language": "en",
 				"rights": "© Anthropic",
 				"url": "https://claude.ai/share/aa94e62a-d95e-4753-ac54-8ac43380c5b7",
@@ -523,7 +583,7 @@ var testCases = [
 						"creatorType": "author"
 					}
 				],
-				"date": "2025-09-21",
+				"date": "[n.d.]",
 				"language": "en",
 				"rights": "© DeepSeek",
 				"url": "https://chat.deepseek.com/share/un1ogabztmju2mn2bv",
@@ -551,11 +611,40 @@ var testCases = [
 					}
 				],
 				"date": "2025-09-21",
-				"abstractNote": "User: quel est le sens de la vie?8:27am\n\nAssistant: La question du sens de la vie est l’une des plus anciennes et des plus profondes de l’humanité ! Selon les philosophies, les cultures et les croyances, les réponses varient énormément.\nQuelques perspe...",
+				"abstractNote": "User: quel est le sens de la vie?\n\nAssistant: La question du sens de la vie est l’une des plus anciennes et des plus profondes de l’humanité ! Selon les philosophies, les cultures et les croyances, les réponses varient énormément.\nQuelques perspe...",
 				"language": "en",
 				"rights": "© Frontier AI",
 				"url": "https://chat.mistral.ai/chat/8db6db48-7394-44a3-8906-b4d2d874e3bc",
 				"websiteTitle": "Mistral",
+				"websiteType": "Generative AI chat",
+				"attachments": [],
+				"tags": [],
+				"notes": [],
+				"seeAlso": []
+			}
+		]
+	},
+	{
+		"type": "web",
+		"url": "https://openwebui.com/c/aborel/161eba90-aeba-4b27-9375-dfd3a4d597ea",
+		"detectedItemType": false,
+		"items": [
+			{
+				"itemType": "webpage",
+				"title": "Early Swiss Battles",
+				"creators": [
+					{
+						"firstName": "",
+						"lastName": "OpenWebUI",
+						"creatorType": "author"
+					}
+				],
+				"date": "2025-09-29",
+				"abstractNote": "User: What are the early battles of Swiss history?\n\nAssistant: atuff",
+				"language": "en",
+				"rights": "© OpenWebUI",
+				"url": "https://chat.mistral.ai/chat/8db6db48-7394-44a3-8906-b4d2d874e3bc",
+				"websiteTitle": "OpenWebUI",
 				"websiteType": "Generative AI chat",
 				"attachments": [],
 				"tags": [],
